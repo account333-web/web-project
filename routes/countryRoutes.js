@@ -16,6 +16,6 @@ router.get('/', checkAuth, async (req, res) => {
     console.error('Countries error:', err);
     res.status(500).json({ error: 'db_error' });
   }
-}); // server.js : app.get('/api/countries', …) :contentReference[oaicite:7]{index=7}
+});
 
 module.exports = router;

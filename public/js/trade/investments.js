@@ -3,7 +3,7 @@ import { getAssetNameFromCode } from './utils.js';
 import { API } from './config.js';
 
 // ─── Chargement des investissements ─────────────────────────────────────────
-// On récupère la liste via /api/trade/list (route définie dans tradeRoutes.js) :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
+// On récupère la liste via /api/trade/list (route définie dans tradeRoutes.js)
 export async function loadInvestments() {
   const resp = await csrfFetch(API.investmentsList);
   state.investments = await resp.json();

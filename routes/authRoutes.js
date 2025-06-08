@@ -45,6 +45,7 @@ router.post('/login', loginRateLimiter, async (req, res) => {
     // Réussite : réinitialisation des échecs
     if (loginFailures[key]) delete loginFailures[key];
     req.session.userId = row.id;
+    req.session.username = pseudo;
     res.redirect('/dashboard.html');
   } catch (err) {
     console.error('Login error:', err);
@@ -82,6 +83,7 @@ router.post('/signup', async (req, res) => {
     );
     const user = await dbGet('SELECT id FROM users WHERE username=?', [pseudo]);
     req.session.userId = user.id;
+    req.session.username = pseudo;
     res.redirect('/dashboard.html');
   } catch (err) {
     if (err.message.includes('UNIQUE constraint failed')) {
@@ -91,6 +93,6 @@ router.post('/signup', async (req, res) => {
       res.redirect('/signup.html?error=server');
     }
   }
-}); // server.js : app.post('/signup', …) :contentReference[oaicite:21]{index=21}
+});
 
 module.exports = router;

@@ -16,7 +16,7 @@ router.get('/countries', checkAuth, async (req, res) => {
     console.error('Rankings countries error:', err);
     res.status(500).json({ error: 'db_error' });
   }
-}); // extrait de votre ancien server.js :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
+});
 
 // GET /api/rankings/companies
 router.get('/companies', checkAuth, async (req, res) => {
@@ -29,7 +29,7 @@ router.get('/companies', checkAuth, async (req, res) => {
     console.error('Rankings companies error:', err);
     res.status(500).json({ error: 'db_error' });
   }
-}); // extrait de votre ancien server.js :contentReference[oaicite:2]{index=2}:contentReference[oaicite:3]{index=3}
+});
 
 // GET /api/rankings/players
 router.get('/players', checkAuth, async (req, res) => {
@@ -56,6 +56,6 @@ router.get('/players', checkAuth, async (req, res) => {
     console.error('Rankings players error:', err);
     res.status(500).json({ error: 'db_error' });
   }
-}); // extrait de votre ancien server.js :contentReference[oaicite:4]{index=4}:contentReference[oaicite:5]{index=5}
+});
 
 module.exports = router;
