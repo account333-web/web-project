@@ -5,8 +5,8 @@ const { dbGet, dbRun } = require('../db');
 
 const router = express.Router();
 
-// authRoutes.js
-const loginFailures = {}; // Clé : pseudo ou IP, valeur : { count, lastFailureTime, lockedUntil }
+// Clé : pseudo ou IP → { count, lastFailureTime, lockedUntil }
+const loginFailures = {};
 
 const MAX_FAILURES = 5;
 const LOCK_TIME = 5 * 60 * 1000; // 5 minutes
