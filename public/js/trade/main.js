@@ -2,6 +2,7 @@ import { initChart } from './chart.js';
 import { loadAssets, loadInvestments, updateInvestmentsTable } from './investments.js';
 import { handleBuy, handleSell } from './tradeActions.js';
 import { injectCsrfTokenInForms } from '../utils/csrf.js';
+import './candles.js';
 injectCsrfTokenInForms();
 const assetSelect = document.getElementById('asset');
 document.addEventListener('DOMContentLoaded', async () => {
