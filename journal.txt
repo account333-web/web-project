@@ -1,0 +1,8 @@
+Réorganiser le code.
+Bug page de trade. Quand ça descent en dessous de 0.01.
+Remplacer le logo par défaut.
+Ajouter un nouveau logo pour le chat.
+Remplacer l'emot "bourse" du wallet par une image.
+Revoir l'algorithme des courbes.
+Ajouter feature "ping" dans le chat.
+Paufinner le css.

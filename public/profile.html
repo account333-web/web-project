@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil - ClickSociety</title>
+  <script src="/js/UX/theme_init.js"></script>
+  <link rel="stylesheet" href="css/profile.css" type="text/css">
+  <link rel="icon" href="assets/icon.png" sizes="32x32" type="image/png">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Bienvenue, utilisateur !</h1>
+    <button class="theme-toggle" id="theme-toggle">🌓</button>
+  </header>
+  <main>
+    <section class="card profile-info">
+      <h2>Mon Profil</h2>
+      <p><strong>Balance :</strong> <span id="user-balance">💰 0 CC</span></p>
+      <p><strong>Pays :</strong> <span id="user-country">—</span></p>
+      <p><strong>Entreprise :</strong> <span id="user-company">—</span></p>
+      <div class="actions">
+        <button class="btn" id="dashboard-btn">Dashboard</button>
+        <button class="btn" id="logout-btn">Se déconnecter</button>
+      </div>
+    </section>
+    <section class="card profile-avatar">
+      <h2>Mon Avatar</h2>
+      <form id="avatar-form" enctype="multipart/form-data">
+        <input type="file" id="avatar-input" name="avatar" accept="image/*" />
+        <button type="submit" class="btn">Télécharger</button>
+      </form>
+      <img id="avatar-preview" src="avatars/default.png" alt="Avatar" class="avatar-preview" />
+    </section>
+    <section class="card transactions">
+      <h2>Transactions</h2>
+      <canvas id="transactions-chart"></canvas>
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Pourcentage</th><th>Valeur (CC)</th></tr>
+        </thead>
+        <tbody id="investments-body">
+          <!-- Dynamically loaded -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/js/utils/api.js" defer></script>
+  <script src="/js/profile/profile.js" defer></script>
+  <script src="/js/UX/theme.js" defer></script>
+</body>
+</html>
