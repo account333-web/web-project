@@ -45,9 +45,13 @@ app.use(helmet({
 }));
 
 // ─── 2) Session Express ─────────────────────────────────────────────────────
+// Use a default secret during development if none provided.
+// Make sure to set SESSION_SECRET in production.
+const SESSION_SECRET = process.env.SESSION_SECRET || 'insecure-dev-secret';
+
 const sessionMiddleware = session({
   store: new SQLiteStore({ db: 'sessions.sqlite', dir: './db' }),
-  secret: process.env.SESSION_SECRET,
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   rolling: true,
