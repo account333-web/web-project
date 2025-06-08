@@ -1,4 +1,4 @@
-import { aggregatePerMinute } from './candles.js';
+import { createCandleChart } from '../utils/candleChart.js';
 import { WINDOW_MS } from './config.js';
 import { state } from './state.js';
 import { updateInvestmentsTable } from './investments.js';
@@ -12,73 +12,28 @@ export async function initChart(asset) {
     name = 'ClickCoin';
   } else if (asset.startsWith('company-')) {
     const id = asset.split('-')[1];
-    url  = API.companyHistory.id;
+    url  = API.companyHistory(id);
     name = state.dom.assetSelect.querySelector(`option[value="${asset}"]`).textContent;
   } else return;
 
-  const sinceISO = new Date(Date.now() - WINDOW_MS).toISOString();
-  const rawData = await (await csrfFetch(`${url}?since=${sinceISO}`)).json();
-
-  // 2) Agrège et filtre les 15 dernières minutes
-  const cutoff     = Date.now() - WINDOW_MS;
-  const allCandles = aggregatePerMinute(rawData)
-                        .filter(pt => pt.x.getTime() >= cutoff);
-
-  // 3) Détecte si la dernière bougie correspond à la minute en cours
-  const nowKey      = Math.floor(Date.now() / 60000) * 60000;
-  const last        = allCandles[allCandles.length - 1];
-  if (last && last.x.getTime() === nowKey) {
-    // on retire cette bougie de la série fermée…
-    state.seriesData = allCandles.slice(0, -1);
-    // …et on la transforme en state.liveCandle
-    const [o, h, l, c] = last.y;
-    state.liveCandle = {
-      key:   Math.floor(nowKey / 60000),
-      start: new Date(nowKey),
-      open:  o, high: h, low: l, close: c
-    };
-  } else {
-    state.seriesData = allCandles;
-    state.liveCandle = null;
-  }
-
-  // Titre
-  state.dom.chartTitle.textContent = `Cours de ${name}`;
-  // Re-création du chart
-  if (state.chart) {
-    state.chart.destroy();
-    document.querySelector('#trade-chart').innerHTML = '';
-  }
-  state.chart = new ApexCharts(document.querySelector('#trade-chart'), {
-    series: [{ name, data: [
-      ...state.seriesData,
-      // si on a déjà une state.liveCandle, on l’affiche dès le départ
-      ...(state.liveCandle
-          ? [{ x: state.liveCandle.start, y: [state.liveCandle.open, state.liveCandle.high, state.liveCandle.low, state.liveCandle.close] }]
-          : [])
-    ] }],
-    chart: {
-      type: 'candlestick',
-      height: 350,
-      animations: { enabled: false },
-      toolbar: { show: true }
-    },
-    plotOptions: {
-      candlestick: {
-        colors: { upward: '#00B746', downward: '#EF403C' },
-        wick: { useFillColor: true }
-      }
-    },
-    xaxis: { type: 'datetime', range: WINDOW_MS },
-    yaxis: { tooltip: { enabled: true }, title: { text: 'Prix (CC)' } },
-    annotations: { yaxis: [] }
+  const ctrl = await createCandleChart({
+    elementSelector: '#trade-chart',
+    historyUrl: url,
+    name,
+    windowMs: WINDOW_MS
   });
-  await state.chart.render();
+
+  state.chart      = ctrl.chart;
+  state.seriesData = ctrl.seriesData;
+  state.liveCandle = ctrl.liveCandle;
+  state.chartCtrl  = ctrl;
+
+  state.dom.chartTitle.textContent = `Cours de ${name}`;
   removeSkeleton();
   if (state.lastPrice !== null) {
     updateTradeInfo(state.lastPrice);
   }
-  
+
   // après le render, si on avait une bougie partielle, on l'affiche dans l'annotation
   if (state.liveCandle) {
     updateTradeInfo(state.liveCandle.close);

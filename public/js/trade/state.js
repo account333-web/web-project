@@ -1,6 +1,7 @@
 // state.js
 export const state = {
   chart: null,
+  chartCtrl: null,
   seriesData: [],     // bougies fermées
   liveCandle: null,   // bougie en cours
   lastPrice: null,
