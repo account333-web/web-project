@@ -15,7 +15,7 @@ router.get('/clickcoin/history', checkAuth, async (req, res) => {
       rows = await dbAll(
         `SELECT datetime(recorded_at) AS x, open, high, low, close
            FROM price_history
-          WHERE asset_type='clickcoin' AND recorded_at >= ?
+          WHERE asset_type='clickcoin' AND recorded_at >= datetime(?)
           ORDER BY recorded_at ASC`,
         [since]
       );
@@ -43,7 +43,7 @@ router.get('/companies/history/:id', checkAuth, async (req, res) => {
       rows = await dbAll(
         `SELECT datetime(recorded_at) AS x, open, high, low, close
            FROM price_history
-          WHERE asset_type='company' AND asset_id = ? AND recorded_at >= ?
+          WHERE asset_type='company' AND asset_id = ? AND recorded_at >= datetime(?)
           ORDER BY recorded_at ASC`,
         [req.params.id, since]
       );

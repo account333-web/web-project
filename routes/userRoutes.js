@@ -46,7 +46,7 @@ router.post('/avatar', checkAuth, (req, res) => {
       res.status(500).json({ error: 'db_error' });
     }
   });
-}); // server.js : app.post('/api/user/avatar', …) :contentReference[oaicite:13]{index=13}
+});
 
 // GET /api/user/info
 router.get('/info', checkAuth, async (req, res) => {
@@ -76,7 +76,7 @@ router.get('/info', checkAuth, async (req, res) => {
     console.error('User info error:', err);
     res.status(500).json({ error: 'db_error' });
   }
-}); // server.js : app.get('/api/user/info', …) :contentReference[oaicite:15]{index=15}
+});
 
 router.post('/company', checkAuth, async (req, res) => {
   const { companyId } = req.body;
